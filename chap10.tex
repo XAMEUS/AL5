@@ -1,0 +1,25 @@
+\chapter{All pairs shortest paths}
+
+\textit{"Plus courts chemins toutes sources toutes destinations}
+
+Étant donné un graphe $G$ et une fonction de coût $w$, on veut trouver $\forall u,\, v \in S$ un plus court chemin de $u$ à $v$.
+
+\section{Dijkstra, plusieurs fois}
+Lancer Dijkstra sur tous les sommets ; complexité en temps : $n \times (m + n \log n)$ ($n$ sommets, $m$ arêtes).
+
+\section{Modification de Bellman-Ford}
+\textbf{\textcolor{ocre}{Idée}} : Au temps $t$, calculer $\delta^{t}(u\, v)$ en utilisant $\delta^{t-1}(u\, v) \ \forall u,\, v$.
+
+Initialement $\delta^{1}(u\, v) = w(u,\, v) \ \forall u,\, v$
+
+$\forall t$, calculer $\delta^{t+1}$ en fonction de $\delta^{t}$ ?
+
+On a pour $u,\, v$, un plus court chemin de longueur au plus $t$.
+
+Pour obtenir un plus court chemin de $u$ à $v$ en passant par au plus $t + 1$ arêtes, il suffit de prendre $\min \lbrace \delta^{t}(u\, v),\, \min \lbrace \delta^{t}(u\, x) + w(x,\, v) \rbrace \rbrace$ $x$ voisins de $v$.
+
+On peut s'arrêter lorsque $t = n-1$ (après on forme des cycles).
+
+On note \texttt{Pred[u][v]} le prédécesseur de $v$ dans le plus court chemin de $u$ à $v$.
+
+\lstinputlisting{Scripts/PCC1.py}

@@ -1,0 +1,41 @@
+\documentclass[11pt,fleqn,french]{book} % Default font size and left-justified equations
+
+%\usepackage{stmaryrd} % double [
+\usepackage{amsmath}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{mathrsfs} %\mathscr{A}
+\usepackage{amsmath}
+
+\usepackage{listings,lstautogobble}
+\usepackage[usenames,dvipsnames]{color}
+
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+
+\usepackage{tikz}
+\usepackage{tkz-graph}
+
+\usepackage[top=3cm,bottom=3cm,left=3cm,right=3cm,headsep=10pt,a4paper]{geometry} % Page margins
+
+\usepackage{graphicx} % Required for including pictures
+\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+
+\usepackage{lipsum} % Inserts dummy text
+
+\usepackage{tikz} % Required for drawing custom shapes
+
+%\usepackage[english]{babel} % English language/hyphenation
+
+\usepackage{enumitem} % Customize lists
+\setlist{nolistsep} % Reduce spacing between bullet points and numbered lists
+
+\usepackage{booktabs} % Required for nicer horizontal rules in tables
+\begin{document}
+  \begin{tikzpicture}
+    \Vertex[x=0,y=0]{A}
+    \SetVertexLabelOut
+    \Vertex[x=1,y=0,Lpos=-60]{B}
+  \end{tikzpicture}
+\end{document}

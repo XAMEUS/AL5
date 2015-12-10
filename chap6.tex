@@ -1,0 +1,69 @@
+\chapter{Algorithme de Kruskal}\index{Algorithme de Kruskal}\index{Kruskal}
+
+\begin{definition}[Graphe valué]\index{Graphe valué}\index{Graphe pondéré}
+Un graphe $G = (S,\, A)$ est valué (ou pondéré) si on y associe une fonction de coût sur ses arêtes : $w : A \longrightarrow\mathbb{R}^{+}$ .
+\end{definition}
+
+\begin{definition}[Arbre couvrant minimal]\index{Arbre couvrant minimal}
+Soit $G = (S,\, A)$ et $w$ une fonction de coût, trouver $A^{\prime} \subseteq A$ tel que $T = (S, A^{\prime})$ soit un arbre couvrant de cout minimal $\text{coût}(T) = \sum\limits_{(u,\, v) \in A^{\prime}} w(u,\, v)$
+\end{definition}
+
+\section{Implémentation de l'algorithme de Krukal}
+
+\lstinputlisting{Scripts/Kruskal.py}
+
+Complexité : $ m \log m $ avec $m = \text{nombre d'arêtes}$
+
+\section{Correction de l'algorithme de Kruskal}
+
+\begin{definition}[Arbres couvrants minimaux]\index{ACM}
+$ACM(G,\, w) = $ l'ensemble des arbres couvrants minimaux de $G = (S,\, A)$ : $T^{\prime} = (S,\, A^{\prime})$ avec $A^{\prime} \subseteq A$.
+\end{definition}
+
+\begin{definition}[Compatibilité]\index{Compatibilité}
+Pour toute solution partielle $T^{\prime} \subseteq G$ , on dit que $T^{\prime}$ est \textbf{compatible} avec $ACM(G,\, w)$ et on note $T^{\prime} \sqsubseteq ACM(G,\, w)$ si $\exists T \in ACM(G,\, w)$ tel que $T^{\prime} \subseteq T$.
+\end{definition}
+
+\subsection{Lemme d'optimalité}
+Soit $G$ connexe, $G = (S,\, A)$ et $w : A \longrightarrow \mathbb{R}^{+}$. Si $T^{\prime} \sqsubseteq ACM(G,\, w)$ , $\,T^{\prime} = (S,\,A^{\prime})$ et $S = S_{1} \cup S_{2}$ $\quad S_{1} \cap S_{2} = \varnothing$ tels que $A^{\prime} \cap (S_{1} \times S_{2}) = \varnothing$, alors on peut ajouter $(u,\, v) \in S_{1} \times S_{2}$ , de coût minimal parmi les arêtes $S_{1} \times S_{2} \cap A$. Autrement dit, $T \cup \lbrace (u,\, v) \rbrace \sqsubseteq ACM(G,\, w)$
+
+\subsection*{Preuve}
+On a $G = (S,\, A)$ connexe, $w \longleftarrow \mathbb{R}^{+}$ $\;S = S_{1} \cup S_{2} \;\; S_{1} \cap S_{2} = \varnothing$
+
+$T^{\prime} \subseteq T\in ACM(G,\, w)$
+
+$T^{\prime} \cap S_{1} \times S_{2} = \varnothing$
+
+Soit $(u,\, v)$ \textbf{de moindre coût} parmi $A \cap S_{1} \times S_{2}$
+
+On veut montrer que $T^{\prime} \cup (u,\, v) \sqsubseteq ACM(G,\, w)$
+
+\begin{itemize}
+\item \textbf{cas 1} : si $(u,\, v) \in T$ alors $T^{\prime} \cup (u,\, v) \subseteq ACM(G,\, w)$
+\item \textbf{cas 2} : si $(u,\, v) \notin T$ , comme $G$ est connexe, $T$ est  un $ACM$.
+
+$T$ est connexe, $(u^{\prime},\, v^{\prime}) \in S_{1} \times S_{2} \cap T$ car il existe un chemin de $u$ à $v$ dans $T$.
+
+On a pris $(u,\, v)$ \textbf{de poids minimal} ; donc $w(u,\, v) \leq (u^{\prime},\, v^{\prime})$ .
+
+Regardons $\overset{\sim}{T} = T \setminus \lbrace (u^{\prime},\, v^{\prime}) \rbrace \cup \lbrace (u,\, v) \rbrace$
+
+\begin{enumerate}
+\item coût de $T$ : coût dans $S_{1}$ + coût dans $S_{2}$ + $w(u^{\prime},\, v^{\prime})$
+
+coût de $\overset{\sim}{T}$ : coût dans $S_{1}$ + coût dans $S_{2}$ + $w((u,\, v))$ or $(u,\, v) \leq w(u^{\prime},\, v^{\prime})$
+
+Donc coût de $\overset{\sim}{T} < $ coût de $T$
+
+\item Si $T$ est un arbre couvrant, $\overset{\sim}{T}$ l'est aussi.
+
+%WARNING
+Donc $\overset{\sim}{T} \in ACM(G,\, w)$ et $T^{\prime} \cup (u,\, v) \subseteq ACM(G,\, w)$
+\end{enumerate}
+\end{itemize}
+
+Dans le cas de l'algorithme de Kruskal, supposons qu'à une itération donnée, on ait choisi les arêtes $T^{\prime}$ et on a montré $T \sqsubseteq ACM(G,\, w)$ .
+
+Posons $S_{1}$ la composante connexe qui contient $u$ et $S_{2} = S \setminus S_{1}$ .
+
+$(u,\, v)$ que choisit Kruskal est celle de poids minimal parmi les arêtes qui restent qui ne forme pas de cycle, comme $u \in S_{1}$ , forcément $v \notin S_{1}$ . Donc on peut l'ajouter d'après le lemme d'optimalité.
