@@ -1,201 +1,161 @@
-\chapter{All pairs shortest paths}
+\chapter{Algorithme de Bellman-Ford}\index{Bellman-Ford (algorithme)}
+\vspace*{-0.5cm}
+Cet algorithme permet de trouver les plus courts chemins depuis un sommet source donné. Il est cependant moins performant que Dijkstra, mais est distribuable, chaque sommet du réseau connaît ses voisins, propage les résultats des calculs intermédiaires à ses voisins.
 
-\textit{"Plus courts chemins toutes sources toutes destinations"}
+\section{Idée}
 
-Étant donné un graphe $G$ et une fonction de coût $w$, on veut trouver $\forall u,\, v \in S$ un plus court chemin de $u$ à $v$.
+Commencer avec $d(s)$ = 0 et $d(u) = \infty \ \forall u \neq s$.
 
-\section{Dijkstra, plusieurs fois}
-Lancer Dijkstra sur tous les sommets ; complexité en temps : $n \times (m + n \log n)$ ($n$ sommets, $m$ arêtes).
+À chaque itération, on parcourt toutes les arêtes du graphe; $(u,\, v)\in A$ : si $d(u) + w(u,\, v) < d(v)$
 
-\section{Modification de Bellman-Ford}
-\textbf{\textcolor{ocre}{Idée}} : Au temps $t$, calculer $\delta^{t}(u\, v)$ en utilisant $\delta^{t-1}(u\, v) \ \forall u,\, v$.
+On pose $d(v) = d(u) + w(u,\, v)$ et $pred(v) = u$.
 
-Initialement $\delta^{1}(u\, v) = w(u,\, v) \ \forall u,\, v$
+\subsection*{Exemple}
 
-$\forall t$, calculer $\delta^{t+1}$ en fonction de $\delta^{t}$ ?
-
-On a pour $u,\, v$, un plus court chemin de longueur au plus $t$.
-
-Pour obtenir un plus court chemin de $u$ à $v$ en passant par au plus $t + 1$ arêtes, il suffit de prendre $\min \lbrace \delta^{t}(u\, v),\, \min \lbrace \delta^{t}(u\, x) + w(x,\, v) \rbrace \rbrace$ $x$ voisins de $v$.
-
-On peut s'arrêter lorsque $t = n-1$ (après on forme des cycles).
-
-On note \texttt{Pred[u][v]} le prédécesseur de $v$ dans le plus court chemin de $u$ à $v$.
-
+%\SetUpEdge[color=orange,lw=1.5]
 \begin{figure}[h]
-	\centering
-	\begin{tikzpicture}
-		\GraphInit[vstyle=Normal]
+  \centering
+  	\begin{tikzpicture}
 		\tikzset{VertexStyle/.append  style={fill = node}}
 		\tikzset{VertexStyle/.append  style={text = white}}
 		\SetGraphUnit{1.5}
 		\Vertex{A}
 		\NOEA(A){B}
-		\SOEA(A){F}
-		\SetGraphUnit{2.1}
-		\EA(B){C}
-		\EA(F){E}
+		\SOEA(A){C}
+		\SetGraphUnit{3}
+		\EA(B){D}
 		\SetGraphUnit{1.5}
-		\NOEA(E){D}
-		\Edge[label=$20$](A)(B)
-		\Edge[label=$2$](A)(F)
-		\Edge[label=$40$](F)(C)
-		\Edge[label=$2$](B)(C)
-		\Edge[label=$2$](F)(E)
-		\Edge[label=$2$](E)(D)
-		\Edge[label=$2$](C)(D)
+		\NOEA(C){E}
+		\Edge[label=$2$](A)(B)
+		\Edge[label=$12$](A)(C)
+		\Edge[label=$8$](B)(C)
+		\Edge[label=$4$](B)(D)
+		\Edge[label=$1$](B)(E)
+		\Edge[label=$1$](C)(E)
+		\Edge[label=$2$](D)(E)
+		\Edge[style={bend left=60},label=$4$](D)(C)
 	\end{tikzpicture}
-\end{figure}
+\end{figure}%
+
 
 \begin{figure}[h]
 \centering
-\begin{tabular}{c c c}
-	& \texttt{D} & \texttt{Pred} \vspace*{0.2cm} \\
-	$t = 1$ & 
-	\begin{tabular}{c | c c c c c c}
-		  & A & B & C & D & E & F \\ \hline
-		A & 0 & 20 & - & - & - & 2 \\
-		B & 20 & 0 & 2 & - & - & - \\
-		C & - & 2 & 0 & 2 & - & 40 \\
-		D & - & - & 2 & 0 & 2 & - \\
-		E & - & - & - & 2 & 0 & 2 \\
-		F & 2 & - & 40 & - & 2 & 0
-	\end{tabular} &
-	\begin{tabular}{c | c c c c c c}
-		  & A & B & C & D & E & F \\ \hline
-		A & A & A & - & - & - & A \\
-		B & A & B & B & - & - & - \\
-		C & - & B & C & C & - & C \\
-		D & - & - & C & D & D & - \\
-		E & - & - & - & D & E & E \\
-		F & A & - & C & - & E & F \\
-	\end{tabular} \\ & & \\
-	$t = 2$ & 
-	\begin{tabular}{c | c c c c c c}
-		  & A & B & C & D & E & F \\ \hline
-		A & 0 & 20 & \textcolor{ocre}{22} & - & - & 2 \\
-		B & 20 & 0 & 2 & \textcolor{ocre}{4} & - & \textcolor{ocre}{22} \\
-		C & \textcolor{ocre}{22} & 2 & 0 & 2 & \textcolor{ocre}{4} & 40 \\
-		D & - & \textcolor{ocre}{4} & 2 & 0 & 2 & \textcolor{ocre}{4} \\
-		E & - & - & \textcolor{ocre}{4} & 2 & 0 & 2 \\
-		F & 2 & \textcolor{ocre}{22} & 40 & \textcolor{ocre}{4} & 2 & 0
-	\end{tabular} &
-	\begin{tabular}{c | c c c c c c}
-		  & A & B & C & D & E & F \\ \hline
-		A & A & A & \textcolor{ocre}{B} & - & - & A \\
-		B & A & B & B & \textcolor{ocre}{C} & - & \textcolor{ocre}{A} \\
-		C & \textcolor{ocre}{B} & B & C & C & \textcolor{ocre}{D} & C \\
-		D & - & \textcolor{ocre}{C} & C & D & D & \textcolor{ocre}{E} \\
-		E & - & - & \textcolor{ocre}{D} & D & E & E \\
-		F & A & \textcolor{ocre}{A} & C & \textcolor{ocre}{E} & E & F \\
-	\end{tabular} \\ etc. & &
-\end{tabular}
+\begin{minipage}{.3\textwidth}
+	\centering
+  	\begin{tikzpicture}
+	$t = 1$
+		\tikzset{VertexStyle/.append  style={fill = node}}
+		\tikzset{VertexStyle/.append  style={text = white}}
+		\SetGraphUnit{1.5}
+		\Vertex[x=0, y=1]{A}
+		\SetVertexLabelOut
+		\tikzset{VertexStyle/.append  style={text = orange}}
+		\Vertex[Lpos=90, x=1, y=2]{2}
+		\Vertex[Lpos=-90, x=1, y=0]{12}
+		\tikzset{VertexStyle/.append  style={text = white}}
+		\SetVertexLabelIn
+		\Vertex[x=1, y=2]{B}
+		\Vertex[x=1, y=0]{C}
+		\Edge(A)(B)
+		\Edge(A)(C)
+	\end{tikzpicture}
+\end{minipage}%
+\begin{minipage}{.3\textwidth}
+	\centering
+  	\begin{tikzpicture}
+	$t = 2$
+		\tikzset{VertexStyle/.append  style={fill = node}}
+		\tikzset{VertexStyle/.append  style={text = white}}
+		\SetGraphUnit{1.5}
+		\Vertex[x=0, y=1]{A}
+		\SetVertexLabelOut
+		\tikzset{VertexStyle/.append  style={text = orange}}
+		\Vertex[Lpos=90, x=1, y=2]{2}
+		\Vertex[Lpos=-90, x=1, y=0]{10}
+		\Vertex[Lpos=-45, x=2, y=1]{3}
+		\Vertex[x=3, y=2]{6}
+		\tikzset{VertexStyle/.append  style={text = white}}
+		\SetVertexLabelIn
+		\Vertex[x=1, y=2]{B}
+		\Vertex[x=1, y=0]{C}
+		\Vertex[x=2, y=1]{E}
+		\Vertex[x=3, y=2]{D}
+		\Edge(A)(B)
+		\Edge(B)(C)
+		\Edge(B)(E)
+		\Edge(B)(D)
+	\end{tikzpicture}
+\end{minipage}%
+\begin{minipage}{.3\textwidth}
+	\centering
+  	\begin{tikzpicture}
+	$t = 3$
+		\tikzset{VertexStyle/.append  style={fill = node}}
+		\tikzset{VertexStyle/.append  style={text = white}}
+		\SetGraphUnit{1.5}
+		\Vertex[x=0, y=1]{A}
+		\SetVertexLabelOut
+		\tikzset{VertexStyle/.append  style={text = orange}}
+		\Vertex[Lpos=90, x=1, y=2]{2}
+		\Vertex[Lpos=-90, x=1, y=0]{4}
+		\Vertex[Lpos=-45, x=2, y=1]{3}
+		\Vertex[x=3, y=2]{5}
+		\tikzset{VertexStyle/.append  style={text = white}}
+		\SetVertexLabelIn
+		\Vertex[x=1, y=2]{B}
+		\Vertex[x=1, y=0]{C}
+		\Vertex[x=2, y=1]{E}
+		\Vertex[x=3, y=2]{D}
+		\Edge(A)(B)
+		\Edge(E)(C)
+		\Edge(B)(E)
+		\Edge(E)(D)
+	\end{tikzpicture}
+\end{minipage}%
 \end{figure}
 
-Pour trouver le plus court chemin de $C$ à $F$ il faut attendre $t = 3$, de $A à B$, $t=5 = n-1$ .
+On remarque qu'à l'itération $t$ on trouve des plus courts chemins qui parcourent au plus $t$ arêtes.
+
+Un plus court chemin de $s$ à $u$ parcourt au plus $n - 1$ arêtes. Pour que l'algorithme soit correct, il suffit de montrer qu'à l'itération $t$ on a calculé les plus courts chemins passant par au plus $t$ arêtes et répéter $n - 1$ fois pour avoir tous les plus courts chemins de $s$ aux autres sommets.
+
+\section{Implémentation en Python}
+
+\lstinputlisting{Scripts/Bellman_Ford.py}
+
+Complexité : $n \times m$
+
 
 \vspace*{0.2cm}
+\section{Preuve}
 
-\subsection*{Implémentation}
-Dans l'implémentation de l'algorithme il va falloir faire des copies, sinon à l'instant $t$, \texttt{D} contient un mélange de  $\delta^{t}$ et $\delta^{t+1}$.
+\begin{definition} On note:
 
-\lstinputlisting{Scripts/PCC1.py}
+\begin{itemize}
+\item $\delta^{t}(u,\, v) = $ longueur du plus court cheminde $u$ à $v$ en passant par au plus $t$ arêtes.
+\item $v.dist^{t} = $ valeur de $v.dist$ à l'itération $t$.
+\end{itemize}
+\end{definition}
 
-\section{En doublant la longueur des chemins à chaque itération}
+\begin{proposition}
+$\forall v \in S \ d^{t}(v) = \delta^{t}(s,\, v)$
+\end{proposition}
 
-\textbf{\textcolor{ocre}{Idée}} : Au temps $t$, calculer $\delta^{2^{t}}(u,\, v) \ \forall u,\, v$ en utilisant $\delta^{2^{t-1}}(u,\, v) \ \forall u,\, v$ .
+\begin{proof}
+Par récurrence sur $t$.
 
-Initialement :  $\delta^{2^{t}}(u,\, v) = w(u,\, v) \ \forall u,\, v$
+Lorsque $t = 0$, un seul chemin de longueur $0$ de $s$ à $s$.
 
-$\forall t$ , calculer $\delta^{2^{t+1}}$ en fonction de $\delta^{2^{t+1}}$ ?
+À l'itération $t > 0$, par hypothèse d'induction, $\forall x \ x.dist^{t-1} = \delta^{t-1}(s,\, x)$
 
-$\forall u$ , un plus court chemin de longueur au plus $2^{t+1} = 2 \times 2^{t}$ arêtes est composé de 2 plus courts chemins de longueur au plus $2^{t}$ .
+Soit $C_{v}$ un plus court chemin de $s$ à $v$ parcourant au plus $t$ arêtes. Si $C_{v}$ a moins de $t$ arêtes alors on l'a découvert à une itération précédente $t^{\prime} < t$ donc $v.dist^{t^{\prime}} = \delta^{t-1}(s,\, v)$. Si $C_{v}$ a $t$ arêtes, le chemin $s \longrightarrow x$ est un plus court chemin qui parcourt au plus $t - 1$ arêtes (sinon on trouverait un meilleur chemin de $t$ arêtes vers $v$).
 
-\begin{figure}[h]
-\centering
-$u \overset{\leq \; 2^{t}}{\xrightarrow{\hspace*{2cm}}} x \overset{\leq \; 2^{t}}{\xrightarrow{\hspace*{2cm}}} v$
-\end{figure}
+On peut appliquer l'hypothèse d'induction $x \ x.dist^{t-1} = \delta^{t-1}(s,\, x)$ .
 
-Pour obtenir un plus court chemin de $u$ à $v$ en passant par au plus $2^{t+1}$ arêtes il suffit de prendre :
+À l'itération $t$ on considère $x$ et son voisin $v$ et on posera :
 
-\begin{figure}[h]
-\centering
-$\min \lbrace \delta^{2^{t}}(u,\, x),\, \min\limits_{x \in S} \lbrace \delta^{2^{t}}(u,\, x) + \delta^{2^{t}}(x,\, v) \rbrace \rbrace$
-\end{figure}
-
-On peut s'arrêter lorsque $\delta^{2^{t}} \geq n - 1$ .
-
-\subsection*{Implémentation}
-On note \texttt{Pred[u][v]} le prédécesseur de $v$ dans le plus court chemin de $u$ à $v$.
-
-\lstinputlisting{Scripts/PCC2.py}
-
-\section{Algorithme de Floyd-Warshall}\index{Floyd-Warshall (Algorithme)}
-
-\textbf{\textcolor{ocre}{Idée}} : Supposons que les sommets soient numérotés de $1$ à $n$.
-
-À chaque itération $t$, on va calculer la longueur des plus courts chemins de $u$ à $v$ $\forall u,\, v \in S$ qui passent uniquement par les sommets $\lbrace 1,\, ... ,\, t\rbrace$
-
-Appelons $\underset{R\subseteq S}{\delta^{R}}(u,\, x)$ la longueur du plus court chemin de $u$ à $v$ passant uniquement par des sommets appartenant à $R$.
-
-
-De façon générale, si on a calculé $\forall u,\, v \ \ \delta^{1,\,...\,,\,k}(u,\, v)$
-
-\begin{figure}[h]
-\centering
-$\delta^{1,\,...\,,\,k}(u,\, v) = \min \lbrace \delta^{1,\,...,\,k}(u,\, v),\, \delta^{1,\,...\, ,\,k}(u,\, k+1)\delta^{1,\,...\, ,\,k}(k+1,\, v)\rbrace$
-\end{figure}
-
-\newpage
-
-\begin{figure}[h]
-\centering
-\begin{minipage}{.5\textwidth}
-	\centering
-	\begin{tabular}{c | c c c c c c}
-		  & A & B & C & D & E & F \\ \hline
-		A & 0 & 20 & - & - & - & 2 \\
-		B & 20 & 0 & 2 & - & - & - \\
-		C & - & 2 & 0 & 2 & - & 40 \\
-		D & 40 & - & 2 & 0 & 2 & - \\
-		E & - & - & - & 2 & 0 & 2 \\
-		F & 2 & - & - & - & 2 & 0
-	\end{tabular}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-	\centering
-	\begin{tabular}{c | c c c c c c}
-		  & A & B & C & D & E & F \\ \hline
-		A & - & - & - & - & - & - \\
-		B & - & - & - & - & - & - \\
-		C & - & - & - & - & - & - \\
-		D & - & - & - & - & - & - \\
-		E & - & - & - & - & - & - \\
-		F & - & - & - & - & - & - \\
-	\end{tabular}
-\end{minipage}%
-\end{figure}
-
-
-\begin{figure}[h]
-\centering
-\begin{minipage}{.5\textwidth}
-	\centering
-	\begin{tabular}{c c l}
-		$t = 1$ & : & $\delta(B,\, F) = 22$ \\
-		$t = 2$ & : & $\delta(A,\, C) = 22$ \\
-		& & $\delta(C,\, F) = 26$
-	\end{tabular}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-	\centering
-	\begin{tabular}{c c l}
-		$t = 3$ & : &$\delta(A,\, D) = \delta(A,\, C) + \delta(C,\, D) = 22 + 2 = 24$ \\
-		& & $\delta(D,\, F) = \delta(D,\, C) + \delta(C,\, F) = 2 + 24 = 26$ \\
-		& & $\delta(B,\, D) = \delta(B,\, C) + \delta(C,\, D) = 2 + 2 = 4$
-	\end{tabular}
-\end{minipage}%
-\end{figure}
-
-\subsection*{Implémentation}
-\lstinputlisting{Scripts/Floyd_Warshall.py}
+\begin{tabular}{l l l}
+$v.dist$ & $\leq$ & $x.dist + w(x,\, v)$ \\
+	& $=$ & $\delta^{t-1}(s,\, x) + w(x,\, v)$ \\
+	& $=$ & $\delta^{t}(s,\, v)$ \\
+\end{tabular}
+\end{proof}

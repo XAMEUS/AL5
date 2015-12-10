@@ -1,161 +1,131 @@
-\chapter{Algorithme de Bellman-Ford}\index{Bellman-Ford (algorithme)}
-\vspace*{-0.5cm}
-Cet algorithme permet de trouver les plus courts chemins depuis un sommet source donné. Il est cependant moins performant que Dijkstra, mais est distribuable, chaque sommet du réseau connaît ses voisins, propage les résultats des calculs intermédiaires à ses voisins.
+\chapter{Les plus cours chemins : Dijkstra}\index{Dijkstra}
 
-\section{Idée}
-
-Commencer avec $d(s)$ = 0 et $d(u) = \infty \ \forall u \neq s$.
-
-À chaque itération, on parcourt toutes les arêtes du graphe; $(u,\, v)\in A$ : si $d(u) + w(u,\, v) < d(v)$
-
-On pose $d(v) = d(u) + w(u,\, v)$ et $pred(v) = u$.
-
-\subsection*{Exemple}
-
-%\SetUpEdge[color=orange,lw=1.5]
+\section*{Communisme vs Capitalisme}
 \begin{figure}[h]
+\centering
+\begin{minipage}{.5\textwidth}
   \centering
   	\begin{tikzpicture}
+		\GraphInit[vstyle=Normal]
 		\tikzset{VertexStyle/.append  style={fill = node}}
 		\tikzset{VertexStyle/.append  style={text = white}}
 		\SetGraphUnit{1.5}
 		\Vertex{A}
-		\NOEA(A){B}
+		\SOWE(A){B}
 		\SOEA(A){C}
-		\SetGraphUnit{3}
-		\EA(B){D}
-		\SetGraphUnit{1.5}
-		\NOEA(C){E}
-		\Edge[label=$2$](A)(B)
-		\Edge[label=$12$](A)(C)
-		\Edge[label=$8$](B)(C)
-		\Edge[label=$4$](B)(D)
-		\Edge[label=$1$](B)(E)
-		\Edge[label=$1$](C)(E)
-		\Edge[label=$2$](D)(E)
-		\Edge[style={bend left=60},label=$4$](D)(C)
+		\Edge[label=$5$](A)(C)
+		\SetUpEdge[color=orange,lw=1.5]
+		\Edge[label=$5$](A)(B)
+		\Edge[label=$3$](B)(C)
 	\end{tikzpicture}
-\end{figure}%
-
-
-\begin{figure}[h]
-\centering
-\begin{minipage}{.3\textwidth}
-	\centering
-  	\begin{tikzpicture}
-	$t = 1$
-		\tikzset{VertexStyle/.append  style={fill = node}}
-		\tikzset{VertexStyle/.append  style={text = white}}
-		\SetGraphUnit{1.5}
-		\Vertex[x=0, y=1]{A}
-		\SetVertexLabelOut
-		\tikzset{VertexStyle/.append  style={text = orange}}
-		\Vertex[Lpos=90, x=1, y=2]{2}
-		\Vertex[Lpos=-90, x=1, y=0]{12}
-		\tikzset{VertexStyle/.append  style={text = white}}
-		\SetVertexLabelIn
-		\Vertex[x=1, y=2]{B}
-		\Vertex[x=1, y=0]{C}
-		\Edge(A)(B)
-		\Edge(A)(C)
-	\end{tikzpicture}
+  \caption{Arbre Couvrant minimal, coût = $8$}
 \end{minipage}%
-\begin{minipage}{.3\textwidth}
-	\centering
+\begin{minipage}{.5\textwidth}
+  \centering
   	\begin{tikzpicture}
-	$t = 2$
+		\GraphInit[vstyle=Normal]
 		\tikzset{VertexStyle/.append  style={fill = node}}
 		\tikzset{VertexStyle/.append  style={text = white}}
 		\SetGraphUnit{1.5}
-		\Vertex[x=0, y=1]{A}
-		\SetVertexLabelOut
-		\tikzset{VertexStyle/.append  style={text = orange}}
-		\Vertex[Lpos=90, x=1, y=2]{2}
-		\Vertex[Lpos=-90, x=1, y=0]{10}
-		\Vertex[Lpos=-45, x=2, y=1]{3}
-		\Vertex[x=3, y=2]{6}
-		\tikzset{VertexStyle/.append  style={text = white}}
-		\SetVertexLabelIn
-		\Vertex[x=1, y=2]{B}
-		\Vertex[x=1, y=0]{C}
-		\Vertex[x=2, y=1]{E}
-		\Vertex[x=3, y=2]{D}
-		\Edge(A)(B)
-		\Edge(B)(C)
-		\Edge(B)(E)
-		\Edge(B)(D)
+		\Vertex{A}
+		\SOWE(A){B}
+		\SOEA(A){C}
+		\Edge[label=$3$](B)(C)
+		\SetUpEdge[color=orange,lw=1.5]
+		\Edge[label=$5$](A)(B)
+		\Edge[label=$5$](A)(C)
 	\end{tikzpicture}
-\end{minipage}%
-\begin{minipage}{.3\textwidth}
-	\centering
-  	\begin{tikzpicture}
-	$t = 3$
-		\tikzset{VertexStyle/.append  style={fill = node}}
-		\tikzset{VertexStyle/.append  style={text = white}}
-		\SetGraphUnit{1.5}
-		\Vertex[x=0, y=1]{A}
-		\SetVertexLabelOut
-		\tikzset{VertexStyle/.append  style={text = orange}}
-		\Vertex[Lpos=90, x=1, y=2]{2}
-		\Vertex[Lpos=-90, x=1, y=0]{4}
-		\Vertex[Lpos=-45, x=2, y=1]{3}
-		\Vertex[x=3, y=2]{5}
-		\tikzset{VertexStyle/.append  style={text = white}}
-		\SetVertexLabelIn
-		\Vertex[x=1, y=2]{B}
-		\Vertex[x=1, y=0]{C}
-		\Vertex[x=2, y=1]{E}
-		\Vertex[x=3, y=2]{D}
-		\Edge(A)(B)
-		\Edge(E)(C)
-		\Edge(B)(E)
-		\Edge(E)(D)
-	\end{tikzpicture}
+  \caption{Plus courts chemins depuis A}
 \end{minipage}%
 \end{figure}
 
-On remarque qu'à l'itération $t$ on trouve des plus courts chemins qui parcourent au plus $t$ arêtes.
+Étant donné un graphe valué $G,\, w$ et un sommet de départ $s$. On veut calculer les plus courts chemins de $s$ à $v$ dans $G$ $\forall v \in S$.
 
-Un plus court chemin de $s$ à $u$ parcourt au plus $n - 1$ arêtes. Pour que l'algorithme soit correct, il suffit de montrer qu'à l'itération $t$ on a calculé les plus courts chemins passant par au plus $t$ arêtes et répéter $n - 1$ fois pour avoir tous les plus courts chemins de $s$ aux autres sommets.
-
-\section{Implémentation en Python}
-
-\lstinputlisting{Scripts/Bellman_Ford.py}
-
-Complexité : $n \times m$
-
-
-\vspace*{0.2cm}
-\section{Preuve}
-
-\begin{definition} On note:
+\begin{definition}[Notations]
+Si $C = (s = u_{0},\, u_{1},\, u_{2},\, ...\; u_{k} = v)$ est un chemin de $s$ à $v$ dans $G$, on écrit :
 
 \begin{itemize}
-\item $\delta^{t}(u,\, v) = $ longueur du plus court cheminde $u$ à $v$ en passant par au plus $t$ arêtes.
-\item $v.dist^{t} = $ valeur de $v.dist$ à l'itération $t$.
+\item $s \overset{C}{\longrightarrow}_{G} v$
+\item $w(C) = \sum\limits_{i = 1}^{k} w (u_{i-1},\, u_{i})$
+\item $\delta (s,\, v) = min \lbrace w (C) : s \overset{C}{\longrightarrow}_{G} v\rbrace$
 \end{itemize}
 \end{definition}
 
 \begin{proposition}
-$\forall v \in S \ d^{t}(v) = \delta^{t}(s,\, v)$
+On peut toujours trouver des chemins $C_{u} s \overset{C}{\longrightarrow} u$ tel que l'union des $C_{u}$ forme un arbre.
 \end{proposition}
 
-\begin{proof}
-Par récurrence sur $t$.
+\textbf{\sffamily\small Preuve}
+Supposons qu'on ait 2 sommets $u$, $v$ des plus courts chemins $C_{u}$, $C_{v}$ dont l'union forme un cycle.
 
-Lorsque $t = 0$, un seul chemin de longueur $0$ de $s$ à $s$.
+%WARNING
+Les segments $C_{1}$, $C_{2}$ $\ x \overset{C_{1}}{\longrightarrow} y$ $\ x \overset{C_{2}}{\longrightarrow} y$ ont le même coût, sinon supposons $w(C_{1}) < w(C_{2})$ alors il y a un chemin plus court de $s$ à $v$ qui passe par $C_{1}$; $C_{2}$ n'est pas un plus court chemin, impossible.
 
-À l'itération $t > 0$, par hypothèse d'induction, $\forall x \ x.dist^{t-1} = \delta^{t-1}(s,\, x)$
+\section{Algorithme de Dijkstra}
 
-Soit $C_{v}$ un plus court chemin de $s$ à $v$ parcourant au plus $t$ arêtes. Si $C_{v}$ a moins de $t$ arêtes alors on l'a découvert à une itération précédente $t^{\prime} < t$ donc $v.dist^{t^{\prime}} = \delta^{t-1}(s,\, v)$. Si $C_{v}$ a $t$ arêtes, le chemin $s \longrightarrow x$ est un plus court chemin qui parcourt au plus $t - 1$ arêtes (sinon on trouverait un meilleur chemin de $t$ arêtes vers $v$).
+On modifie l'algorithme de Prim, la notion de priorité change, maintenant c'est la distance à $s$.
 
-On peut appliquer l'hypothèse d'induction $x \ x.dist^{t-1} = \delta^{t-1}(s,\, x)$ .
+améliorer la priorité $\equiv$ améliorer la distance à $s$
 
-À l'itération $t$ on considère $x$ et son voisin $v$ et on posera :
+\lstinputlisting{Scripts/Dijkstra.py}
+
+\section{Preuve de l'algorithme de Dijkstra}
+
+\begin{definition}
+Notons $u.prio^{t}$ la valeur de $u.prio$ à la $t^{\text{ième}}$ itération.
+\end{definition}
+
+\begin{theorem}
+À l'itération $t$, si $u \notin$ $tas$ alors $u.prio^{t} = \delta(s,\, u)$.
+\end{theorem}
+
+On utilise sans démontrer trois propriétés :
+
+\begin{enumerate}[label=(P\arabic*)]
+\item S'il n'y a pas de chemin de $s$ à $u$ alors $u.prio^{t} = \infty \ \forall t$
+\item "Borne supérieure" : $\forall u,\; \forall \ u.prio^{t} \geq \delta(s,\, u)$ et $u.prio^{t} \geq u.prio^{t+1}$
+\item Si $s \longrightarrow_{G}^{\ast} u \longrightarrow^{1} v$ est un plus court chemin de $s$ à $v$ et $u.prio^{t} = \delta(s,\, u)$,\\ alors $\forall t^{\prime} > t \ v.prio^{t^{\prime}} = \delta(s,\, v)$
+\end{enumerate}
+
+\vspace*{0.16cm}
+\textbf{\sffamily\small Preuve du théorème}
+
+Supposons qu'à l'itération $t$, $u$ sorte du $tas$.
+
+Regardons $T^{t}$ l'ensemble des arêtes déjà choisies.
+
+Soit $C$ un plus court chemin de $s$ à $u$, et $x,\, y$ la première arête de $C$ telle que $(x,\, y) \notin T^{t}$.
+
+$s\overset{C_{1}\subseteq T}{\longrightarrow} x \overset{\notin T}{\longrightarrow}^{1} y\overset{C_{2}}{\longrightarrow} u$
+
+\textbf{On va montrer que $y = u$}.
+
+\begin{enumerate}[label=(\Roman*)]
+\item Montrons que : $y.prio^{t} = \delta(s,\,y)$
+
+\textbf{(*)} On utilise le fait que sur un plus court chemin de $u_{0}$ à $u_{k}$ les segments initiaux de $u_{0}$ à $u_{i}$ (avec $0 \leq i \leq k$) sont aussi des plus courts chemins
+
+On a que $x \in T^{t}$, supposons qu'il a été ajouté à l'instant $t^{\prime} < t$.
+
+Par hypothèse d'induction : $x.prio^{t^{\prime}} = \delta(s,\, x)$
+
+À l'itération $t^{\prime}$, $y$ est encore dans le tas et $y$ est voisin de $x$, et on aura posé $y.prio^{t^{\prime}} \leq x.prio^{t^{\prime}} + w(x,\, y)$ or $s \longrightarrow^{i} x \longrightarrow^{1} y$ est un plus court chemin (par \textbf{(*)}).
+
+$y.prio^{t^{\prime}} \leq \delta(s,\, x) + w(x,\, y) = $ longueur du chemin $ = \delta(s,\, y)$ et par P2 $y.prio^{t} = \delta(s,\, y)$
+
+\item On montre que $C_{2} = \varnothing$
+
+Donc on conclut que $y = u$, et par (I) $u.prio^{t} = y.prio^{t} = \delta(s,\, y) = \delta(s,\, u)$
+
+À l'itération $t$, $y \in T^{t}$ , mais y a une priorité $\neq \infty$ donc $y$ est dans le tas, tout comme $u$ qui a été choisi.
 
 \begin{tabular}{l l l}
-$v.dist$ & $\leq$ & $x.dist + w(x,\, v)$ \\
-	& $=$ & $\delta^{t-1}(s,\, x) + w(x,\, v)$ \\
-	& $=$ & $\delta^{t}(s,\, v)$ \\
+	$u.prio^{t}$ & $\leq$ & $y.prio^{t}\quad$ car $u$ sort du tas\\
+	& $=$ & $\delta(s,\, y)\quad$ (II)\\
+	& $\leq$ & $\delta(s,\, u)\quad$ car $y$ précède $u$ sur un plus court chemin\\
+	& $\leq$ & $u.prio^{t}\quad$ (P2)
 \end{tabular}
-\end{proof}
+
+$\Rightarrow$ toutes ces quantités sont égales $\Rightarrow$ $y = u$
+
+\end{enumerate}
