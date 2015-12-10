@@ -134,5 +134,9 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {11.2}Modification de Bellman-Ford}{47}{section.11.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {ocre}Index}}{49}{section*.17}
+\contentsline {section}{\numberline {11.3}En doublant la longueur des chemins \IeC {\`a} chaque it\IeC {\'e}ration}{48}{section.11.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {11.4}Algorithme de Floyd-Warshall}{49}{section.11.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\leavevmode {\color {ocre}Index}}{51}{section*.20}
 \contentsfinish 

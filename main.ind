@@ -1,118 +1,88 @@
 \begin{theindex}
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{A}}};\vspace*{0.2cm}\nopagebreak
 
-  \item ACM\dotfill \hyperpage{37}
-  \item Algorithme de Kruskal\dotfill \hyperpage{37}
-  \item Algorithme de Prim\dotfill \hyperpage{39}
-  \item Arbre\dotfill \hyperpage{10}
-  \item Arbre binaire\dotfill \hyperpage{21}
-  \item Arbre binaire de recherche\dotfill \hyperpage{21}
-  \item Arbre couvrant\dotfill \hyperpage{10, 11}
-  \item Arbre couvrant minimal\dotfill \hyperpage{37}
-  \item Arbre de parcours\dotfill \hyperpage{32}
+  \item ACM, \hyperpage{37}
+  \item Algorithme de Kruskal, \hyperpage{37}
+  \item Algorithme de Prim, \hyperpage{39}
+  \item Arbre, \hyperpage{10}
+  \item Arbre binaire, \hyperpage{21}
+  \item Arbre binaire de recherche, \hyperpage{21}
+  \item Arbre couvrant, \hyperpage{10, 11}
+  \item Arbre couvrant minimal, \hyperpage{37}
+  \item Arbre de parcours, \hyperpage{32}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{B}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Bellman-Ford (algorithme)\dotfill \hyperpage{45}
+  \item Bellman-Ford (algorithme), \hyperpage{45}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{C}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Chemin\dotfill \hyperpage{10}
-  \item Chemin simple\dotfill \hyperpage{10}
-  \item Chemins\dotfill \hyperpage{31}, \hyperpage{33}
-  \item Co\IeC {\^u}t amorti\dotfill \hyperpage{21}
-  \item Compatibilit\IeC {\'e}\dotfill \hyperpage{37}
-  \item Complexit\IeC {\'e}\dotfill \hyperpage{21}
-  \item Complexit\IeC {\'e} au pire cas\dotfill \hyperpage{21}
-  \item Complexit\IeC {\'e} en moyenne\dotfill \hyperpage{21}
-  \item Composante connexe\dotfill \hyperpage{13}
-  \item Connexe\dotfill \hyperpage{10}
-  \item Cycle\dotfill \hyperpage{10}
+  \item Chemin, \hyperpage{10}
+  \item Chemin simple, \hyperpage{10}
+  \item Chemins, \hyperpage{31}, \hyperpage{33}
+  \item Co\IeC {\^u}t amorti, \hyperpage{21}
+  \item Compatibilit\IeC {\'e}, \hyperpage{37}
+  \item Complexit\IeC {\'e}, \hyperpage{21}
+  \item Complexit\IeC {\'e} au pire cas, \hyperpage{21}
+  \item Complexit\IeC {\'e} en moyenne, \hyperpage{21}
+  \item Composante connexe, \hyperpage{13}
+  \item Connexe, \hyperpage{10}
+  \item Cycle, \hyperpage{10}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{D}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Dijkstra\dotfill \hyperpage{41}
+  \item Dijkstra, \hyperpage{41}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{F}}};\vspace*{0.2cm}\nopagebreak
 
-  \item FIND\dotfill \hyperpage{15}
+  \item FIND, \hyperpage{15}
+  \item Floyd-Warshall (Algorithme), \hyperpage{49}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{G}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Graphe\dotfill \hyperpage{9}
-  \item Graphe des pr\IeC {\'e}d\IeC {\'e}cesseurs\dotfill 
-		\hyperpage{32}
-  \item Graphe pond\IeC {\'e}r\IeC {\'e}\dotfill \hyperpage{11}, 
+  \item Graphe, \hyperpage{9}
+  \item Graphe des pr\IeC {\'e}d\IeC {\'e}cesseurs, \hyperpage{32}
+  \item Graphe pond\IeC {\'e}r\IeC {\'e}, \hyperpage{11}, 
 		\hyperpage{37}
-  \item Graphe valu\IeC {\'e}\dotfill \hyperpage{11}, \hyperpage{37}
+  \item Graphe valu\IeC {\'e}, \hyperpage{11}, \hyperpage{37}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{H}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Hauteur (Arbre)\dotfill \hyperpage{22}
+  \item Hauteur (Arbre), \hyperpage{22}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{I}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Insertion (ABR)\dotfill \hyperpage{23}
+  \item Insertion (ABR), \hyperpage{23}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{K}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Kruskal\dotfill \hyperpage{37}
+  \item Kruskal, \hyperpage{37}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{L}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Liste d'adjacence\dotfill \hyperpage{10}
+  \item Liste d'adjacence, \hyperpage{10}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{M}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Matrice d'adjacence\dotfill \hyperpage{10}
+  \item Matrice d'adjacence, \hyperpage{10}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{P}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Parcours en largeur\dotfill \hyperpage{28}, \hyperpage{31}
-  \item Parcours en profondeur\dotfill \hyperpage{33}
-  \item Prim\dotfill \hyperpage{39}
-  \item Probl\IeC {\`e}me\dotfill \hyperpage{11}
-  \item Profondeur d'un n\IeC {\oe }ud (Arbre)\dotfill \hyperpage{22}
+  \item Parcours en largeur, \hyperpage{28}, \hyperpage{31}
+  \item Parcours en profondeur, \hyperpage{33}
+  \item Prim, \hyperpage{39}
+  \item Probl\IeC {\`e}me, \hyperpage{11}
+  \item Profondeur d'un n\IeC {\oe }ud (Arbre), \hyperpage{22}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{R}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Recherche dans un ABR\dotfill \hyperpage{22}
+  \item Recherche dans un ABR, \hyperpage{22}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{S}}};\vspace*{0.2cm}\nopagebreak
 
-  \item Structure de donn\IeC {\'e}es\dotfill \hyperpage{11}
+  \item Structure de donn\IeC {\'e}es, \hyperpage{11}
 
   \indexspace
-\vspace*{0.5cm}\nopagebreak
-\tikz\node at (0pt,0pt) [draw=none,fill=ocre!50,line width=1pt,inner sep=5pt]{\parbox{\linewidth-2\fboxsep-2\fboxrule-2pt}{\centering\large\sffamily\bfseries\textcolor{white}{U}}};\vspace*{0.2cm}\nopagebreak
 
-  \item UNION\dotfill \hyperpage{15}
+  \item UNION, \hyperpage{15}
 
 \end{theindex}
