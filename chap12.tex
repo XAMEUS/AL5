@@ -1,0 +1,15 @@
+\chapter{Cycles négatifs}
+
+\begin{definition}[Cycle négatif]\index{Cycle négatif}
+Un cycle $\mathcal{C} = \lbrace u_{1},\, ...\, ,\, u_{k}$ est négatif si $\sum\limits_{i = 1}^{k - 1} w(u_{i},\, u{i+1}) + w(u_{k},\, u_{1} < 0$. Pour simplifier les équations, on écrit $W_{\mathcal{C}} = \sum\limits_{(u,\, v) \in \mathcal{C}} w(u,\, v)$
+\end{definition}
+
+\textcolor{ocre}{Remarque} : l'algorithme de Dijkstra ne marche pas pour les graphes avec des poids négatifs.
+
+\section{Algorithme pour détecter les cycles négatifs}
+
+Supposons qu'on vient d'exécuter Bellman-Ford et qu'on a \texttt{dist[s][v]} $\forall v$. On exécute alors un tour de boucle supplémentaire, si on découvre un meilleur chemin (ce qui n'est normalement pas possible, car on a trouvé tous les plus courts chemins), c'est qu'il y a un cycle négatif.
+
+\lstinputlisting{Scripts/CycleNegatif.py}
+
+Complexité : Bellman-Ford + $O(n + m)$
